@@ -5,6 +5,7 @@ import { useIsMobile } from '@/hooks/useMediaQuery';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef } from 'react';
+import { useAuth } from '@/context/AuthContext';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -15,6 +16,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const { course, progress, calculateProgress } = useCourse();
   const isMobile = useIsMobile();
   const pathname = usePathname();
+  const { isAuthenticated } = useAuth();
   const currentProgress = calculateProgress();
 
   // 移动端遮罩层
@@ -81,6 +83,7 @@ function SidebarContent({
 }) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const activeItemRef = useRef<HTMLLIElement>(null);
+  const { isAuthenticated } = useAuth();
 
   // 滚动到激活项
   useEffect(() => {
@@ -162,57 +165,78 @@ function SidebarContent({
                       key={lesson.id}
                       ref={isActive ? activeItemRef : null}
                     >
-                      <Link
-                        href={`/lesson/${lesson.id}`}
-                        onClick={() => {
-                          onClose();
-                        }}
-                        className={`
-                          group relative flex items-center gap-3 px-3 py-2.5 rounded-lg
-                          text-base transition-all duration-200
-                          ${
-                            isActive
-                              ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-md shadow-blue-200'
-                              : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
-                          }
-                        `}
-                      >
-                        {/* 章节编号 */}
-                        <div className={`
-                          flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold
-                          ${isActive 
-                            ? 'bg-white/20 text-white' 
-                            : 'bg-gray-100 text-gray-700 group-hover:bg-gray-200'
-                          }
-                        `}>
-                          {lessonIndex + 1}
-                        </div>
-                        
-                        {/* 课程标题 */}
-                        <span className={`
-                          flex-1 leading-relaxed
-                          ${isActive ? 'font-medium' : 'font-normal'}
-                        `}>
-                          {lesson.title}
-                        </span>
-                        
-                        {/* 完成状态指示器 */}
-                        {isActive && (
-                          <div className="flex-shrink-0">
-                            <svg
-                              className="w-4 h-4"
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
+                      {isAuthenticated ? (
+                        <Link
+                          href={`/lesson/${lesson.id}`}
+                          onClick={() => {
+                            onClose();
+                          }}
+                          className={`
+                            group relative flex items-center gap-3 px-3 py-2.5 rounded-lg
+                            text-base transition-all duration-200
+                            ${
+                              isActive
+                                ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-md shadow-blue-200'
+                                : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                            }
+                          `}
+                        >
+                          {/* 章节编号 */}
+                          <div className={`
+                            flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold
+                            ${isActive 
+                              ? 'bg-white/20 text-white' 
+                              : 'bg-gray-100 text-gray-700 group-hover:bg-gray-200'
+                            }
+                          `}>
+                            {lessonIndex + 1}
                           </div>
-                        )}
-                      </Link>
+                          
+                          {/* 课程标题 */}
+                          <span className={`
+                            flex-1 leading-relaxed
+                            ${isActive ? 'font-medium' : 'font-normal'}
+                          `}>
+                            {lesson.title}
+                          </span>
+                          
+                          {/* 完成状态指示器 */}
+                          {isActive && (
+                            <div className="flex-shrink-0">
+                              <svg
+                                className="w-4 h-4"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                  clipRule="evenodd"
+                                />
+                              </svg>
+                            </div>
+                          )}
+                        </Link>
+                      ) : (
+                        <div
+                          className={`
+                            group relative flex items-center gap-3 px-3 py-2.5 rounded-lg
+                            text-base cursor-not-allowed opacity-50
+                            text-gray-400
+                          `}
+                          title="请先登录以查看课程内容"
+                        >
+                          {/* 章节编号 */}
+                          <div className="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold bg-gray-100 text-gray-400">
+                            {lessonIndex + 1}
+                          </div>
+                          
+                          {/* 课程标题 */}
+                          <span className="flex-1 leading-relaxed font-normal">
+                            {lesson.title}
+                          </span>
+                        </div>
+                      )}
                     </li>
                   );
                 })}
