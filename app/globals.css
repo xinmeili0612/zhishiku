@@ -1,0 +1,168 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 249, 250, 251;
+  --background-end-rgb: 255, 255, 255;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-start-rgb));
+}
+
+/* 移动端优化 */
+@media (max-width: 640px) {
+  /* 防止输入框聚焦时页面缩放 */
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}
+
+/* 平滑滚动 */
+html {
+  scroll-behavior: smooth;
+}
+
+/* 触摸优化 - 增加点击区域 */
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* 自定义滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* 侧边栏滚动条优化 */
+aside {
+  scrollbar-width: thin;
+  scrollbar-color: #9ca3af #f3f4f6;
+}
+
+aside ::-webkit-scrollbar {
+  width: 12px;
+}
+
+aside ::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 6px;
+  margin: 4px;
+}
+
+aside ::-webkit-scrollbar-thumb {
+  background: #9ca3af;
+  border-radius: 6px;
+  border: 2px solid #f3f4f6;
+  min-height: 40px;
+}
+
+aside ::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/* 侧边栏滚动容器样式 */
+aside .overflow-y-scroll {
+  -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: stable !important;
+  /* 确保可以接收滚轮事件 */
+  cursor: default;
+  /* 确保滚动条在 Firefox 中可见 */
+  scrollbar-width: thin !important;
+  scrollbar-color: #9ca3af #f3f4f6 !important;
+}
+
+/* 所有状态下都强制显示滚动条 */
+.sidebar-scroll-container:hover,
+.sidebar-scroll-container:focus,
+.sidebar-scroll-container:active {
+  overflow-y: scroll !important;
+  scrollbar-gutter: stable !important;
+}
+
+/* 强制显示滚动条（当内容可滚动时） */
+aside .overflow-y-auto::-webkit-scrollbar,
+.sidebar-scroll-container::-webkit-scrollbar {
+  display: block !important;
+  -webkit-appearance: none;
+  width: 12px !important;
+  height: 12px !important;
+}
+
+/* 确保滚动条轨道始终可见 */
+aside .overflow-y-auto::-webkit-scrollbar-track,
+.sidebar-scroll-container::-webkit-scrollbar-track {
+  display: block !important;
+  background: #f3f4f6 !important;
+  border-radius: 6px;
+  margin: 4px;
+}
+
+/* 确保滚动条在内容可滚动时始终显示 */
+aside .overflow-y-auto::-webkit-scrollbar-thumb,
+.sidebar-scroll-container::-webkit-scrollbar-thumb {
+  background: #9ca3af !important;
+  border-radius: 6px;
+  border: 2px solid #f3f4f6;
+  min-height: 40px;
+}
+
+aside .overflow-y-auto::-webkit-scrollbar-thumb:hover,
+.sidebar-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: #6b7280 !important;
+}
+
+/* 课程内容统一样式 - 与前言样式保持一致 */
+.course-content h3 {
+  font-size: 1.5rem !important;
+  font-weight: 700 !important;
+  color: #1f2937 !important;
+  margin-bottom: 1rem !important;
+  margin-top: 0 !important;
+  padding-bottom: 0.5rem !important;
+  border-bottom: 2px solid #e5e7eb !important;
+}
+
+.course-content h3:not(:first-child) {
+  margin-top: 2rem !important;
+}
+
+.course-content p {
+  line-height: 1.8 !important;
+  color: #374151 !important;
+  margin-bottom: 1rem !important;
+  font-size: 1rem !important;
+}
+
+.course-content p:last-child {
+  margin-bottom: 0 !important;
+}
+
+.course-content div {
+  margin-bottom: 2.5rem;
+}
+
+.course-content div:last-child {
+  margin-bottom: 0;
+}
+
